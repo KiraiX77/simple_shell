@@ -1,1 +1,1 @@
-This is the ALX simple shell project done as a team of 2
+This is the ALX simple shell project produced as a team of 2
