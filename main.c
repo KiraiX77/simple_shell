@@ -35,10 +35,11 @@ int main(int argc, char *argv[])
 void process_input(char **args, char *line, int *status)
 {
 	char *start = line;
+	char *end;
 
 	while (*start == ' ')
 		start++;
-	char *end = line + _strlen(line) - 1;
+	end = line + _strlen(line) - 1;
 
 	while (end > start && *end == ' ')
 		end--;
@@ -79,21 +80,24 @@ void process_input(char **args, char *line, int *status)
 void interactive_shell(void)
 {
 	int status = 0;
+	char *args[MAX_NUM_ARGS + 1];
 
 	while (1)
 	{
+		char *line;
+		size_t size;
+		int numRead;
+
 		if (isatty(STDIN_FILENO))
 			write(STDOUT_FILENO, ":) ", 3);
 
-		char *line = NULL;
-		size_t size = 0;
-		int numRead;
+		line = NULL;
+		size = 0;
 
 		numRead = getline(&line, &size, stdin);
 		if (numRead >= 0)
 		{
 			line[numRead - 1] = '\0';
-			char *args[MAX_NUM_ARGS + 1];
 
 			process_input(args, line, &status);
 		}
@@ -121,6 +125,7 @@ void non_interactive_shell(char *command)
 		char *args[MAX_NUM_ARGS + 1];
 		char *token = strtok(command, " ");
 		int argIndex = 0;
+		int status;
 
 		while (token != NULL && argIndex < MAX_NUM_ARGS)
 		{
@@ -128,7 +133,7 @@ void non_interactive_shell(char *command)
 			token = strtok(NULL, " ");
 		}
 		args[argIndex] = NULL;
-		int status = execute_command(args, 0);
+		status = execute_command(args, 0);
 
 		if (status != 0)
 		{

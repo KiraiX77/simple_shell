@@ -10,15 +10,17 @@ char *my_getenv(const char *name)
 {
 	/* "environ" declared manually */
 	/* extern char **environ; */
+	size_t name_len;
+	char **env;
 
 	if (name == NULL)
 	{
 		return (NULL);
 	}
 
-	size_t name_len = _strlen(name);
+	name_len = _strlen(name);
 
-	for (char **env = environ; *env != NULL; env++)
+	for (env = environ; *env != NULL; env++)
 	{
 		if (starts_with_variable_name(*env, name, name_len))
 		{
@@ -49,7 +51,9 @@ const char *name, size_t name_len)
  */
 void print_environment(void)
 {
-	for (char **env = environ; *env != NULL; env++)
+	char **env;
+
+	for (env = environ; *env != NULL; env++)
 	{
 		my_fprintf(stdout, "%s\n", *env);
 	}

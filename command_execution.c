@@ -9,6 +9,8 @@
  */
 int execute_command(char **args, int command_count)
 {
+	int status;
+
 	if (args[0][0] == '/')
 	{	return (execute_external_command(args, command_count)); }
 	else
@@ -30,7 +32,7 @@ int execute_command(char **args, int command_count)
 			{	perror("strdup");
 				exit(EXIT_FAILURE); }
 
-			int status = search_and_execute_in_path(args, path_copy, command_count);
+			status = search_and_execute_in_path(args, path_copy, command_count);
 
 			free(path_copy);
 			return (status);
@@ -79,6 +81,7 @@ int execute_external_command(char **args, int command_count)
 	{	my_fprintf(stderr, ".%s: %d: %s: not found\n",
 		SHELL_NAME, command_count, args[0]);
 		return (127); }
+	return(0);
 }
 
 /**
@@ -115,9 +118,10 @@ int search_and_execute_in_path(char **args, char *path_copy, int command_count)
 					{	print_command_not_found(command_count, args[0]); }
 					command_count++;
 					return (WEXITSTATUS(status)); }
-			} else
-				print_no_permission(command_count, args[0]);
-				return (126);
+			}
+			else
+			{	print_no_permission(command_count, args[0]);
+				return (126); }
 		}
 		path_token = strtok(NULL, ":");
 	}

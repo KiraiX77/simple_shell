@@ -8,11 +8,14 @@
  */
 char *_strdup(const char *str)
 {
+	size_t len;
+	char *dup;
+
 	if (str == NULL)
 		return (NULL);
 
-	size_t len = _strlen(str) + 1;
-	char *dup = malloc(len);
+	len = _strlen(str) + 1;
+	dup = malloc(len);
 
 	if (dup == NULL)
 		return (NULL);
@@ -62,8 +65,6 @@ int _strncmp(const char *s1, const char *s2, int n)
  * @dest: The destination string
  * @src: The source string
  * @n: The maximum number of characters to copy
- *
- * Return: A pointer to the destination string `dest`.
  */
 char *_strncpy(char *dest, const char *src, int n)
 {

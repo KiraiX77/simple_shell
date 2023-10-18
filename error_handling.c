@@ -1,24 +1,8 @@
 #include "shell.h"
 
-/**
- * print_command_not_found - Print an error message for a command not found
- * @count: The command count
- * @command_name: The name of the command
- *
- * This function prints an error message for a command that is not found.
- * It calls print_error_message with the appropriate parameters.
- */
 void print_command_not_found(int count, const char *command_name)
 {   print_error_message(count, command_name, "not found"); }
 
-/**
- * print_no_permission - Print an error message for permission denied
- * @count: The command count
- * @command_name: The name of the command
- *
- * This function prints an error message for a permission denied error.
- * It calls print_error_message with the appropriate parameters.
- */
 void print_no_permission(int count, const char *command_name)
 {   print_error_message(count, command_name, "permission denied"); }
 

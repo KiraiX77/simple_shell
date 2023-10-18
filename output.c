@@ -89,9 +89,10 @@ int my_vfprintf(FILE *stream, const char *format, va_list args)
 int my_fprintf(FILE *stream, const char *format, ...)
 {
 	va_list args;
+	int result;
 
 	va_start(args, format);
-	int result = my_vfprintf(stream, format, args);
+	result = my_vfprintf(stream, format, args);
 
 	va_end(args);
 	return (result);
