@@ -42,3 +42,16 @@ const char *command, size_t buffer_size)
 
 	return (token_length + 1 + command_length >= buffer_size);
 }
+
+/**
+ * handle_permission_error - Handle permission errors for external commands
+ * @command_count: The command count
+ * @command_name: The name of the command
+ *
+ * Return: 126
+ */
+int handle_permission_error(int command_count, const char *command_name)
+{
+	print_no_permission(command_count, command_name);
+	return (126);
+}
