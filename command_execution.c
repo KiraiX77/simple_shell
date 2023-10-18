@@ -9,36 +9,41 @@
  */
 int execute_command(char **args, int command_count)
 {
+	char *path_copy;
+	char *path;
 	int status;
 
 	if (args[0][0] == '/')
 	{	return (execute_external_command(args, command_count)); }
-	else
+
+	if (_strcmp(args[0], "setenv") == 0)
+	{	return (execute_setenv_command(args)); }
+	else if (_strcmp(args[0], "unsetenv") == 0)
+	{	return (execute_unsetenv_command(args)); }
+	else if (_strcmp(args[0], "cd") == 0)
+	{	return (execute_cd_command(args)); }
+
+	if (access(args[0], F_OK) == 0)
 	{
-		if (access(args[0], F_OK) == 0)
-		{
-			if (access(args[0], X_OK) == 0)
-			{	return (execute_external_command(args, command_count)); }
-			else
-			{	print_no_permission(command_count, args[0]);
-				return (126); }
-		}
+		if (access(args[0], X_OK) == 0)
+		{	return (execute_external_command(args, command_count)); }
 		else
-		{
-			char *path = my_getenv("PATH");
-			char *path_copy = _strdup(path);
-
-			if (path_copy == NULL)
-			{	perror("strdup");
-				exit(EXIT_FAILURE); }
-
-			status = search_and_execute_in_path(args, path_copy, command_count);
-
-			free(path_copy);
-			return (status);
-		}
+		{	return (handle_permission_error(command_count, args[0])); }
 	}
+
+	path = my_getenv("PATH");
+	path_copy = _strdup(path);
+
+	if (path_copy == NULL)
+	{	perror("strdup");
+		exit(EXIT_FAILURE); }
+
+	status = search_and_execute_in_path(args, path_copy, command_count);
+
+	free(path_copy);
+	return (status);
 }
+
 
 /**
  * execute_external_command - Execute an external command
@@ -81,7 +86,7 @@ int execute_external_command(char **args, int command_count)
 	{	my_fprintf(stderr, ".%s: %d: %s: not found\n",
 		SHELL_NAME, command_count, args[0]);
 		return (127); }
-	return(0);
+	return (0);
 }
 
 /**
