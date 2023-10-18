@@ -8,8 +8,6 @@
  */
 char *my_getenv(const char *name)
 {
-	/* "environ" declared manually */
-	/* extern char **environ; */
 	size_t name_len;
 	char **env;
 
@@ -24,8 +22,7 @@ char *my_getenv(const char *name)
 	{
 		if (starts_with_variable_name(*env, name, name_len))
 		{
-			return (*env + name_len + 1);
-		}
+			return (*env + name_len + 1); }
 	}
 
 	return (NULL);
@@ -57,4 +54,49 @@ void print_environment(void)
 	{
 		my_fprintf(stdout, "%s\n", *env);
 	}
+}
+
+/**
+ * set_env_variable - Set or modify an environment variable
+ * @name: The name of the environment variable
+ * @value: The value to set or modify
+ *
+ * Return: 0 on success, -1 on failure
+ */
+int set_env_variable(const char *name, const char *value)
+{
+	if (name == NULL)
+	{	my_fprintf(stderr, "setenv: Missing variable name\n");
+		return (-1);
+	}
+
+	if (setenv(name, value, 1) == -1)
+	{
+		perror("setenv");
+		return (-1);
+	}
+
+	return (0);
+}
+
+/**
+ * unset_env_variable - Unset an environment variable
+ * @name: The name of the environment variable to unset
+ *
+ * Return: 0 on success, -1 on failure
+ */
+int unset_env_variable(const char *name)
+{
+	if (name == NULL)
+	{	my_fprintf(stderr, "unsetenv: Missing variable name\n");
+		return (-1);
+	}
+
+	if (unsetenv(name) == -1)
+	{
+		perror("unsetenv");
+		return (-1);
+	}
+
+	return (0);
 }
