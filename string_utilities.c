@@ -65,6 +65,7 @@ int _strncmp(const char *s1, const char *s2, int n)
  * @dest: The destination string
  * @src: The source string
  * @n: The maximum number of characters to copy
+ * Return: char dest .
  */
 char *_strncpy(char *dest, const char *src, int n)
 {
